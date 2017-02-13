@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'member'
+    'django_extensions'
+
+    'member.apps.MemberConfig'
 ]
 
 MIDDLEWARE = [
