@@ -57,6 +57,7 @@ class MyUser(models.Model):
 
     @staticmethod
     def allocated_global_variables():
+        # MyUser.allocated_global_variables()
         import sys
         module = sys.modules['__main__']
         users = MyUser.objects.filter(username__startswith='User')
