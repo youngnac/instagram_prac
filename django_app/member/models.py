@@ -14,7 +14,8 @@ class MyUser(models.Model):
                                        # verbose_name="followers",
                                        # related_name="followers",
                                        symmetrical=False,
-                                       blank=True
+                                       blank=True,
+                                       related_name="follower_set"
                                        )
 
     def __str__(self):
@@ -42,4 +43,10 @@ class MyUser(models.Model):
 
     @staticmethod
     def allocated_global_variables():
-        for i in ranage(num):
+        import sys
+        module = sys.modules['__main__']
+        users = MyUser.objects.filter(username__startswith='User')
+        for index, user in enumerate(users):
+            #__main__모듈에 u#형태로된 것들을  이름으로 사용해 user로 MyUser객체 할당
+            setattr(module, 'u{}'.format(index+1), user)
+
