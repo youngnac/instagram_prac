@@ -64,7 +64,3 @@ class MyUser(models.Model):
         for index, user in enumerate(users):
             # __main__모듈에 u#형태로된 것들을  이름으로 사용해 user로 MyUser객체 할당
             setattr(module, 'u{}'.format(index + 1), user)
-
-
-
-

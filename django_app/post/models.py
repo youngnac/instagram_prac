@@ -58,7 +58,6 @@ class PostLike(models.Model):
             ('user', 'post')
         )
 
-
     def __str__(self):
         return "Post {}\'s Like {} ".format(
             self.post_id,
@@ -72,17 +71,9 @@ class Comment(models.Model):
     content = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
 
-
-
     def __str__(self):
         return "Post [{}]\'s  Comment {} by Author []".format(
             self.post_id,
             self.id,
             self.author.id,
         )
-
-#In [34]: p1.comment_set.get(id=1).author
-#Out[34]: <MyUser: User1>
-
-#In [35]: p1.comment_set.get(id=1).content
-#Out[35]: 'oh cute'
