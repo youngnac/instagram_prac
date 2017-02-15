@@ -4,8 +4,11 @@ from member.models import MyUser
 
 
 class Post(models.Model):
-    author = models.ForeignKey(MyUser, )
+    author = models.ForeignKey(MyUser)
     photo = models.ImageField('Profile Picture', blank=True, upload_to="post")
+    # photo_height = models.PositiveIntegerField(null=True, blank=True, editable=False, default="100")
+    # photo_width = models.PositiveIntegerField(null=True, blank=True, editable=False, default="100")
+
     like_users = models.ManyToManyField(MyUser,
                                         through="PostLike",
                                         # through_fields=("user", "post"),
@@ -32,7 +35,7 @@ class Post(models.Model):
 
     def add_comment(self, user, new_comment):
         return self.comment_set.create(
-            user=user,
+            author=user,
             content=new_comment
         )
 
@@ -69,7 +72,7 @@ class Comment(models.Model):
     author = models.ForeignKey(MyUser, )
     post = models.ForeignKey(Post, )
     content = models.TextField()
-    created_date = models.DateTimeField(auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True,)
 
     def __str__(self):
         return "Post [{}]\'s  Comment {} by Author []".format(
