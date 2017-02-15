@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% for post in post_list %}
+<fieldset>
+    <div>POST: {{ post.id }}</div>
+    <br>
+    <div>By: {{ post.author.username}}</div>
+    <br>
+    <div>Content:{{ post.content|linebreaks|truncatechars:30 }}</div>
+    <br>
+    {% if post.like_users.all %}
+    <div style = "color:red"> Liked by: <p>{{ post.like_users.all }}</p>
+    {% for like_user in post.like_users.all %}
+    <p>{{ like_user }}</p>
+    {% endfor %}
+    </div>
+    {% endif %}
+    <br>
+    <div><a href="{% url 'post:post-detail' post.id %}"><img src="{{ MEDIA_URL }}{{ post.photo }}"></a></div>
+    <br>
+    {% if post.comment_set.all %}
+    {% for comment in post.comment_set.all %}
+    <div style="color:crimson">{{ comment.author.username }}: {{ comment.content }}</div>
+    {% endfor %}
+    {% endif %}
+</fieldset>
+
+{% endfor %}
+
+
+</body>
+</html>

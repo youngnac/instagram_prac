@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<div>POST: {{ post.id }}</div>
+<br>
+<div>By: {{ post.author.username}}</div>
+<br>
+<div>Content:{{ post.content|linebreaks }}</div>
+<br>
+{% if post.like_users.all %}
+<div style="color:red"> Liked by:
+    {% for like_user in post.like_users.all %}
+    <li>{{ like_user }}</li>
+    {% endfor %}
+</div>
+{% endif %}
+<br>
+<div>PHOTO: <img src="{{ MEDIA_URL }}{{ post.photo }}"></div>
+<br>
+{% if post.comment_set.all %}
+{% for comment in post.comment_set.all %}
+<div style="color:crimson">{{ comment.author.username }}: {{ comment.content }}</div>
+{% endfor %}
+{% endif %}
+<div>
+    <form action="{% url 'post:comment_add' post_id=post.id %}" method="POST">{% csrf_token %}
+
+
+        <input type="text" , name="content">
+
+        <button type="submit">Write Comment</button>
+    </form>
+</div>
+
+
+
+
+</body>
+</html>
