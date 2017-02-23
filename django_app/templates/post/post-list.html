@@ -1,38 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'common/base.html' %}
 
-{% for post in post_list %}
-<fieldset>
-    <div>POST: {{ post.id }}</div>
-    <br>
-    <div>By: {{ post.author.username}}</div>
-    <br>
-    <div>Content:{{ post.content|linebreaks|truncatechars:30 }}</div>
-    <br>
-    {% if post.like_users.all %}
-    <div style = "color:red"> Liked by: <p>{{ post.like_users.all }}</p>
-    {% for like_user in post.like_users.all %}
-    <p>{{ like_user }}</p>
+{% block content %}
+<div class="post-list-container">
+    {% for post in post_list %}
+    <article class="post">
+        <header class="post-header">
+            <span class="header-username">{{ post.author.username }}</span>
+            <span class="header-date">{{ post.created_date }}</span>
+            {% if user == post.author %}
+            <span class="post-delete clearfix">
+        <form class="post-delete-form" action="{% url 'post:post_delete' post_id=post.id %}" method="POST">
+          {% csrf_token %}
+          <button class="btn-post-delete" type="submit">X</button>
+        </form>
+      </span>
+            {% endif %}
+        </header>
+        <div class="post-image-container">
+            <a href="{% url 'post:post-detail' post.id %}">
+                <img src="{{ MEDIA_URL }}{{ post.photo }}" class="post-image">
+            </a>
+        </div>
+        <div class="post-bottom-container">
+            <div class="post-content">{{ post.content|linebreaks|truncatechars:30 }}</div>
+            <div class="post-like-users">
+                {% if post.like_users.all %}
+                {{ post.like_count }} Likes
+                {% for user in post.like_users.all %}
+                {{ user.username }}
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="post-like-users">
+
+            </div>
+            <div class="post-comments">
+                {% if post.comment_set.all %}
+                {% for comment in post.comment_set.all %}
+
+                <div class="post-comment">
+                    <span class="comment-author">{{ comment.author.username }}</span>
+                    <span class="comment-content">{{ comment.content }}</span>
+                    {% if user == comment.author %}
+                    <span class="comment-delete">
+            <form class="comment-delete-form"
+                  action="{% url 'post:comment_delete' post_id=post.id comment_id=comment.id %}" method="POST">
+            {% csrf_token %}
+            <button class="btn-comment-delete" type="submit">X</button>
+          </form>
+        </span>
+                    {% endif %}
+
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="post-comment-form-container clearfix">
+                <form action="{% url 'post:post_like_toggle' post_id=post.id %}" method="POST">
+                    {% csrf_token %}
+                    {% if user in post.like_users.all %}
+                    <button href="" class="btn-like sprite-heart-red sprite-logo" type="submit"></button>
+                    {% else %}
+                    <button href="" class="btn-like sprite-heart-empty sprite-logo" type="submit"></button>
+                    {% endif %}
+                </form>
+            </div>
+            <form action="{% url 'post:comment_add' post_id=post.id %}" method="POST">{% csrf_token %}
+                <input type="text" placeholder="댓글 달기..." class="input-comment" name="content">
+            </form>
+        </div>
+    </article>
     {% endfor %}
-    </div>
-    {% endif %}
-    <br>
-    <div><a href="{% url 'post:post-detail' post.id %}"><img src="{{ MEDIA_URL }}{{ post.photo }}"></a></div>
-    <br>
-    {% if post.comment_set.all %}
-    {% for comment in post.comment_set.all %}
-    <div style="color:crimson">{{ comment.author.username }}: {{ comment.content }}</div>
-    {% endfor %}
-    {% endif %}
-</fieldset>
+    <a href="{% url 'post:post-add' %}">
+        <button class="post-add-btn">ADD POST</button>
+    </a>
+</div>
 
-{% endfor %}
-
-
-</body>
-</html>
+{% endblock %}

@@ -16,9 +16,12 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # templates folder root 설정
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
-#MEDIA 보관 root
+# MEDIA 보관 root
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
+# 정적팔일을 관리할 폴더 경로 지정
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+# 정적파일을 모아 서빙할 폴더 경로 지정 테스트시 static.serve관련 에러 날 경우 반드시 추가***
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -72,7 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                #media url 사용하기 위함
+                # media url 사용하기 위함
                 'django.template.context_processors.media'
             ],
         },
@@ -94,6 +97,7 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
+
 AUTH_USER_MODEL = 'member.MyUser'
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -110,6 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_URL = 'member:login'
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
@@ -128,3 +133,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
+STATICFILES_DIRS = [
+    STATIC_DIR
+]

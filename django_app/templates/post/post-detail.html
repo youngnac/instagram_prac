@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'common/base.html' %}
+{% block content %}
+
 
 
 <div>POST: {{ post.id }}</div>
+<br>
+<div>Date: {{ post.created_date }}</div>
 <br>
 <div>By: {{ post.author.username}}</div>
 <br>
@@ -21,25 +19,35 @@
 </div>
 {% endif %}
 <br>
-<div>PHOTO: <img src="{{ MEDIA_URL }}{{ post.photo }}"></div>
+<form action="{% url 'post:post_like_toggle' post_id=post.id %}" method="POST">
+{% csrf_token %}
+    <button type="submit">
+        {% if user in post.like_users.all %}
+        UNLIKE
+        {% else %}
+        LIKE
+        {% endif %}
+    </button>
+</form>
+
+<div><img src="{{ MEDIA_URL }}{{ post.photo }}"></div>
 <br>
 {% if post.comment_set.all %}
 {% for comment in post.comment_set.all %}
-<div style="color:crimson">{{ comment.author.username }}: {{ comment.content }}</div>
+<div style="color:crimson">{{ comment.author.username }}: {{ comment.content }}
+    <form action ="{% url 'post:comment_delete' post_id=post.id comment_id=comment.id %}" method="POST" >{% csrf_token %}
+<button type="submit">DELETE</button>
+
+</form>
+</div>
 {% endfor %}
 {% endif %}
 <div>
     <form action="{% url 'post:comment_add' post_id=post.id %}" method="POST">{% csrf_token %}
-
-
-        <input type="text" , name="content">
-
+        <!--<input type="text" , name="content">-->
+        {{ comment_form.content}}
         <button type="submit">Write Comment</button>
     </form>
 </div>
 
-
-
-
-</body>
-</html>
+{% endblock %}

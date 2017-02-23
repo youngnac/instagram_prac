@@ -1,0 +1,29 @@
+{% extends 'common/base.html' %}
+{% block content %}
+
+<div class="profile-container">
+    <div class="profile-top">
+        <img src="{{ MEDIA_URL }}{{ user.user_pic }}" class="img-profile">
+        <a href="{% url 'member:profile-pic-add' %}">add your picture</a>
+</div>
+
+        <div class="profile=text">
+            <div class="text-top">
+                <span class="profile-username">{{ user.username }}</span>
+                <a href="" class="btn">edit profile</a>
+                <a href="{% url 'member:logout' %}" class="btn"></a>
+            </div>
+
+            <div class="text-status">
+                <span class="status-item">{{ post_count }} posts</span>
+                <span class="status-item">{{ follower_count }} followers</span>
+                <span class="status-item">{{ following_count }} following</span>
+            </div>
+
+            <div class="text-name"></div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

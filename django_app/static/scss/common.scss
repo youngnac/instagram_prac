@@ -1,0 +1,15 @@
+.clearfix{
+  &:after{
+    content:'';
+    clear: both;
+    height: 0px;
+    display: block;
+  }
+}
+
+.post-delete{
+  .post-delete-form{
+    display: inline-block;
+    float: right;
+  }
+}

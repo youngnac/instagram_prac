@@ -25,22 +25,57 @@ class MyUser(PermissionsMixin, AbstractBaseUser):
         ('f', 'female'),
 
     )
-    # since inheriting from AbstractBaseUser
-    # password
-    # last_loginmg
-    # is_active are given
-
     username = models.CharField(max_length=25, unique=True)
     nickname = models.CharField(max_length=20)
     email = models.EmailField(blank=True)
     gender = models.CharField(max_length=1, choices=CHOICES_GENDER)
+
+    following = models.ManyToManyField('self',
+                                       through="Relationship",
+                                       symmetrical=False,
+                                       related_name="follower_set")
+
     is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
     objects = MyUserManager()
+    user_pic = models.ImageField(blank=True, upload_to="member")
 
     def get_short_name(self):
         return "Hello, {}! Your nickname is {}".format(self.username, self.nickname)
+
     def get_full_name(self):
         return self.nickname
 
+    def follow(self, user):
+        return self.following_relation.create(to_user=user)
+
+    def unfollow(self, user):
+        return self.following_relation.get(to_user=user).delete()
+
+    @property
+    def followers(self):
+        return self.follower_set.all()
+
+
+#
+
+class Relationship(models.Model):
+    from_user = models.ForeignKey(MyUser, related_name="following_relation")
+    to_user = models.ForeignKey(MyUser, related_name="followed_by")
+    date_follow = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = (
+            ('from_user','to_user',)
+        )
+
+    def __str__(self):
+        return 'Relation from({}) to ({})'.format(
+            self.from_user.username,
+            self.to_user.username,
+        )
+
+
+class Model(object):
+    pass

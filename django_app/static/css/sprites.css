@@ -1,0 +1,8 @@
+.sprite-logo {
+  background-image: url(/static/images/sprites.png);
+}
+
+.sprite-logo {
+  background-size: 352px 339px;
+  background-position: -176px 0;
+}

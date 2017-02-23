@@ -1,0 +1,50 @@
+{% load staticfiles %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>INSTAGRAM</title>
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/sprites.css' %}">
+  <link rel="stylesheet" href="{% static 'css/header.css' %}">
+  <link rel="stylesheet" href="{% static 'css/post_list.css' %}">
+
+
+</head>
+<body>
+  <div id = "wrap">
+    <header>
+      <nav>
+        <div id="logo-wrap">
+          <span class="nav-left nav-group">
+            <a href="{% url 'post:post-list' %}" class ="logo sprite-logo"></a>
+          </span>
+          <span class="nav-group nav-center">
+            <input class="search" type="text" placeholder="search">
+          </span>
+          <span class="nav-group nav-right">
+            <a href="" id="compass" class="mini-logo sprite-logo"></a>
+            <a href="" id="heart" class="mini-logo sprite-logo"></a>
+            <a href="{% url 'member:profile' %}" id = "user-info" class="mini-logo sprite-logo"></a>
+          </span>
+        </div>
+      </nav>
+    </header>
+
+    {% if user.is_authenticated %}
+
+    <div>Welcome! {{ user.username }}</div>
+    {% else %}
+    <div><a href="{% url 'member:login' %}">Please Login</a></div>
+
+    <br>
+    {% endif %}
+
+
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{% extends 'common/base.html' %}
+{% block content %}
+<div class="photo-add-container">
+
+    <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+        {{ form }}
+        <button type="submit">POST</button>
+    </form>
+
+</div>
+
+{% endblock %}
